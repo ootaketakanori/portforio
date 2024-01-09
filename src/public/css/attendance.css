@@ -1,0 +1,17 @@
+
+
+.main-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.main-table th {
+    background-color: #ccc;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.main-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
