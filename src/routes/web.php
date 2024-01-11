@@ -44,3 +44,8 @@ Route::get('/next-page', function () {
 
 Route::get('/attendance', [WorkController::class, 'index'])->name('attendance.index');
 Route::get('/previous-page', [WorkController::class, 'previousPage'])->name('previousPage');
+Route::get('/next-page', [WorkController::class, 'nextPage'])->name('nextPage');
+
+Route::get('/attendance/search', [WorkController::class, 'search']);
+
+Route::get('dates/search', 'WorkController@search');
