@@ -48,4 +48,8 @@ Route::get('/next-page', [WorkController::class, 'nextPage'])->name('nextPage');
 
 Route::get('/attendance/search', [WorkController::class, 'search']);
 
-Route::get('dates/search', 'WorkController@search');
+//Route::get('dates/search', 'WorkController@search');
+
+Route::get('/dates/search', 'WorkController@search')->name('dates.search');
+
+// routes/web.php

@@ -18,8 +18,10 @@ class Attendance extends Model
         'work_duration',
     ];
 
-    public function user()
+    protected $table = 'attendances';
+
+    public function getData()
     {
-        return $this->belongsTo(User::class);
+        return $this->all();
     }
 }

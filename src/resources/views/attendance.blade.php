@@ -7,9 +7,7 @@
 
 @section('content')
 
-<form action="{{ route('dates.search') }}" nethod="get">
-    <input type="text" name="keyword" placeholer="日付を検索">
-    <button type="submit">検索</button>
+
 </form>
 <div class="main__inner">
     <div class="page">
@@ -18,7 +16,7 @@
             <button type="submit">
                 < </button>
         </form>
-        <p class="date">{{ $date ?? 'No data provided'}}</p>
+        <p class="date">{{ Carbon\Carbon::today()->format('Y/m/d') }}</p>
         <form action="{{ route('nextPage') }}" method="get">
             @csrf
             <button type="submit">></button>

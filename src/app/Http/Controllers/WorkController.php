@@ -5,32 +5,29 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
-
+use App\Models\Rest;
+use Illuminate\Support\Facades\DB;
 
 class WorkController extends Controller
 {
-public function search(Request $request)
-{
-    //検索日付、取得
-    $searchDate = $request->input('keyword');
 
-    //現在の日付を除外する
-if ($searchDate == now()->toDateString()) {
-    return redirect()->route('attendance.index');
-}
+    public function date(Request $request)
+    {
 
-$dates = Attendance::whereDate('date', 'like', '%' . $searchDate . '%')->get();
+        $entries = Attendance::simplePaginate(5);
+        $date = Carbon::today();
+        $today = Rest::whereDate('created_at', $date)->get();
 
-$entries = Attendance::whereDate('startWork', $searchDate)->orWhereDate('endWork', $searchDate)->simplePaginate(5);
-
-return view('attendance', ['entries' => $entries, 'date' => $searchDate]);
-}
+        return view('attendance', ['entries' => $entries, 'today' => $today]);
+    }
 
     public function index()
     {
+
         $entries = Attendance::simplePaginate(5);
-        $date = '現在の日付';
-        return view('attendance', ['entries' => $entries, 'date' => $date]);
+
+
+        return view('attendance', ['entries' => $entries]);
     }
     public function create()
     {
@@ -38,27 +35,32 @@ return view('attendance', ['entries' => $entries, 'date' => $searchDate]);
     }
     public function startWork(Request $request)
     {
-        $this->saveTimestampToSession('startWork');
 
-        //現在時刻：送信するデータをセット
-        $requestData = [
-            'data' => now()->toDateString(),
-        ];
-        //現在時刻をセッションに保存
-        session()->put('requestData', $requestData);
-        //$dateに現在時刻を格納
-        $date = $requestData['data'];
+        $this->saveTimestampToSession('startBreak');
 
-        return redirect()->route('attendance.index', compact('date'));
+        //現在の日付を取得
+        $currentDate = now()->toDateString();
+
+        //Attendance テーブルにデータ挿入
+        Attendance::create([
+            'action' => 'atartWork',
+            'date' => $currentDate,
+            'start_time' => Carbon::now(),
+        ]);
+
+        return redirect()->route('attendance.index');
     }
     public function endWork(Request $request)
     {
         $this->saveTimestampToSession('endWork');
-        $requestData = [
-            'data' => now()->toDateString(),
-        ];
-        //現在時刻をセッションに保存
-        session()->put('requestData', $requestData);
+        $currentDate = now()->toDateString();
+
+
+        Attendance::create([
+            'action' => 'endWork',
+            'date' => $currentDate,
+            'end_time' => Carbon::now(),
+        ]);
 
         return redirect()->route('attendance.index');
     }
@@ -66,10 +68,16 @@ return view('attendance', ['entries' => $entries, 'date' => $searchDate]);
     {
 
         $this->saveTimestampToSession('startBreak');
-        $requestData = [
-            'data' => now()->toDateString(),
-        ];
-        session()->put('rerquestData', $requestData);
+
+
+
+        $currentDate = now()->toDateString();
+
+        Attendance::create([
+            'action' => 'startBreak',
+            'date' => $currentDate,
+            'start_break' => Carbon::now(),
+        ]);
 
         return redirect()->route('attendance.index');
     }
@@ -77,10 +85,14 @@ return view('attendance', ['entries' => $entries, 'date' => $searchDate]);
     public function endBreak(Request $request)
     {
         $this->saveTimestampToSession('endBreak');
-        $requestData = [
-            'data' => now()->toDateString(),
-        ];
-        session()->put('requestData', $requestData);
+        $currentDate = now()->toDateString();
+
+        Attendance::create([
+            'action' => 'endBreak',
+            'date' => $currentDate,
+            'end_break' => Carbon::now(),
+        ]);
+
         return redirect()->route('attendance.index');
     }
 
@@ -103,6 +115,4 @@ return view('attendance', ['entries' => $entries, 'date' => $searchDate]);
         //後のページのデータ取得、処理
         return redirect()->route('attendance.index');
     }
-
-    
 }
