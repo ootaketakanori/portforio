@@ -56,3 +56,8 @@ Route::get('/dates/search', 'WorkController@search')->name('dates.search');
 
 Route::group(['middleware' => 'auth'], function () {
 });
+
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
