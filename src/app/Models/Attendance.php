@@ -24,4 +24,8 @@ class Attendance extends Model
     {
         return $this->all();
     }
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

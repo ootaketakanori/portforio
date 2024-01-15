@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Rest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class WorkController extends Controller
 {
@@ -25,8 +26,10 @@ class WorkController extends Controller
     {
 
         $entries = Attendance::simplePaginate(5);
-
-
+        //現在日時を取得
+        $now = Carbon::now();
+        //現在日時を変換
+        $now_format = $now->format('Y-m-d');
         return view('attendance', ['entries' => $entries]);
     }
     public function create()
@@ -41,9 +44,15 @@ class WorkController extends Controller
         //現在の日付を取得
         $currentDate = now()->toDateString();
 
+        //ログインユーザーのIDを取得
+
+        $userId = Auth::id();
+
+
         //Attendance テーブルにデータ挿入
         Attendance::create([
-            'action' => 'atartWork',
+            'user_id' => $userId,
+            'action' => 'startWork',
             'date' => $currentDate,
             'start_time' => Carbon::now(),
         ]);
@@ -54,15 +63,23 @@ class WorkController extends Controller
     {
         $this->saveTimestampToSession('endWork');
         $currentDate = now()->toDateString();
+        //ログインユーザーのIDを取得
+
+        if (Auth::check()) {
 
 
-        Attendance::create([
-            'action' => 'endWork',
-            'date' => $currentDate,
-            'end_time' => Carbon::now(),
-        ]);
+            $userId = Auth::id();
 
-        return redirect()->route('attendance.index');
+            Attendance::create([
+                'user_id' => $userId,
+                'action' => 'endWork',
+                'date' => $currentDate,
+                'end_time' => Carbon::now(),
+            ]);
+
+            return redirect()->route('attendance.index');
+        } else {
+        }
     }
     public function startBreak(Request $request)
     {
@@ -73,7 +90,10 @@ class WorkController extends Controller
 
         $currentDate = now()->toDateString();
 
+        $userId = Auth::id();
+
         Attendance::create([
+            'user_id' => $userId,
             'action' => 'startBreak',
             'date' => $currentDate,
             'start_break' => Carbon::now(),
@@ -87,7 +107,11 @@ class WorkController extends Controller
         $this->saveTimestampToSession('endBreak');
         $currentDate = now()->toDateString();
 
+        $userId = Auth::id();
+
         Attendance::create([
+            'user_id' => $userId,
+
             'action' => 'endBreak',
             'date' => $currentDate,
             'end_break' => Carbon::now(),

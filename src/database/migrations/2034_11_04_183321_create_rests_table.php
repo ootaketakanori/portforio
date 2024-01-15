@@ -18,8 +18,8 @@ class CreateRestsTable extends Migration
             $table->foreignId('attendance_id')->constrained('attendances');
             $table->date('date');
 
-            $table->timestamp('break_start_time');
-            $table->timestamp('break_end_time');
+            $table->timestamp('break_start_time')->nullable();
+            $table->timestamp('break_end_time')->nullable();
 
             $table->timestamps();
         });

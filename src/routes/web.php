@@ -53,3 +53,6 @@ Route::get('/attendance/search', [WorkController::class, 'search']);
 Route::get('/dates/search', 'WorkController@search')->name('dates.search');
 
 // routes/web.php
+
+Route::group(['middleware' => 'auth'], function () {
+});
