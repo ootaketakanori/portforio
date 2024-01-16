@@ -61,3 +61,5 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+Route::get('/attendance-day', [WorkController::class, 'index'])->name('attendance.index');

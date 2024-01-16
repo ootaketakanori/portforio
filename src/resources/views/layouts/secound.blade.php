@@ -21,21 +21,11 @@
             <nav class="header-nav">
                 <ul class="haeader__ul">
                     <li class="header__li"><a href="#">ホーム</a></li>
-                    <form class="search" action="/rest/search" method="get">
-                        @csrf
-                        <div class="search__" item>
-                            <select class="search__select" name="rest_id">
-                                <option value-"">日付一覧</option>
-                                @php
-                                $entries = \App\Http\Controllers\WorkController::date(request());
-                                @endphp
-                                @foreach ($entries['today'] as $rest)
-                                <option value="{{ $rest['id'] }}">{{ $rest['created_at'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <li class=" header__li"><a href="#">日付一覧</a></li>
-                        <li class="header__li"><a href="#">ログアウト</a></li>
+
+                    <li class=" header__li"><a href="{{ route('attendance.index') }}">日付一覧</a></li>
+
+
+                    <li class="header__li"><a href="#">ログアウト</a></li>
                 </ul>
             </nav>
         </div>
