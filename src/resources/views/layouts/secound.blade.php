@@ -20,7 +20,7 @@
             </h1>
             <nav class="header-nav">
                 <ul class="haeader__ul">
-                    <li class="header__li"><a href="#">ホーム</a></li>
+                    <li class="header__li"><a href="{{ route('rest.index') }}">ホーム</a></li>
 
                     <li class=" header__li"><a href="{{ route('attendance.index') }}">日付一覧</a></li>
 

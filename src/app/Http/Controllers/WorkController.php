@@ -115,4 +115,8 @@ class WorkController extends Controller
         //後のページのデータ取得、処理//
         return redirect()->route('attendance.index');
     }
+    public function indexrest()
+    {
+        return view('rest');
+    }
 }
