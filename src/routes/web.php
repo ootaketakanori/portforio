@@ -63,4 +63,5 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 Route::get('/attendance-day', [WorkController::class, 'index'])->name('attendance.index');
-Route::get('/rest', [WorkController::class, 'indexrest'])->name('rest.index');
+
+Route::get('/', [WorkController::class, 'create'])->name('rest');
