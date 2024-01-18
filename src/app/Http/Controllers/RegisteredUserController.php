@@ -10,5 +10,6 @@ class RegisteredUserController extends Controller
 {
     public function index()
     {
-    return view('rest');
+        return view('rest');
     }
+}
