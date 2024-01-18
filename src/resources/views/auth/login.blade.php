@@ -9,7 +9,8 @@
 
 <div class="content">
     <h2>ログイン</h2>
-    <form action="/login" method="post">
+    <form action="/authenticated" method="post">
+        @csrf
         <div class="form-group">
             <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
         </div>

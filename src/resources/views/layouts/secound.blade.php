@@ -23,9 +23,12 @@
                     <li class="header__li"><a href="{{ route('rest') }}">ホーム</a></li>
 
                     <li class=" header__li"><a href="{{ route('attendance.index') }}">日付一覧</a></li>
-
-
-                    <li class="header__li"><a href="#">ログアウト</a></li>
+                    @if (Auth::check())
+                    <form class="form" action="logout" method="post">
+                        @csrf
+                        <li class="header__li"><a href="#">ログアウト</a></li>
+                    </form>
+                    @endif
                 </ul>
             </nav>
         </div>

@@ -1,4 +1,9 @@
-FROM php:7.4.9-fpm
+FROM php:8.1-fpm
+
+# コピーする前にmbstring関連の設定を変更する
+RUN set -eux; \
+    echo 'mbstring.internal_encoding = UTF-8' >> /usr/local/etc/php/php.ini; \
+    echo 'mbstring.func_overload = 0' >> /usr/local/etc/php/php.ini
 
 COPY php.ini /usr/local/etc/php/
 

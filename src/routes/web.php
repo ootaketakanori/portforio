@@ -65,3 +65,8 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name(
 Route::get('/attendance-day', [WorkController::class, 'index'])->name('attendance.index');
 
 Route::get('/', [WorkController::class, 'create'])->name('rest');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', [AuthenticatedSessionController::class, 'rest']);
+});
