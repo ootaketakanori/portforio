@@ -13,7 +13,7 @@
         <div class="input-group mb-3">
             <input type="text" class="form-control" id="name" name="name" placeholder="名前" value="{{ old('name') }}" required>
             <div class="form-error">
-                @errror('name')
+                @error('name')
                 {{ $message }}
                 @enderror
             </div>
@@ -21,7 +21,7 @@
         <div class="input-group mb-3">
             <input type="email" class="form-control" id="email" name="email" placeholder="メールアドレス" value="{{ old('name') }}" required>
             <div class="form-error">
-                @errror('email')
+                @error('email')
                 {{ $message }}
                 @enderror
             </div>
@@ -29,7 +29,7 @@
         <div class="input-group mb-3">
             <input type="password" class="form-control" id="password" name="password" placeholder="パスワード" value="{{ old('name') }}" required>
             <div class="form-error">
-                @errror('password')
+                @error('password')
                 {{ $message }}
                 @enderror
             </div>

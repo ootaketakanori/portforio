@@ -70,3 +70,7 @@ Route::get('/', [WorkController::class, 'create'])->name('rest');
 Route::middleware('auth')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'rest']);
 });
+
+Route::get('/register', [RegisteredUserController::class, 'index']);
+
+Route::get('/', [WorkController::class, 'showRestPage'])->name('rest');

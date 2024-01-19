@@ -24,6 +24,8 @@ class WorkController extends Controller
     public function index()
     {
         $entries = Attendance::simplePaginate(5);
+        dd($entries);
+
         return view('attendance', ['entries' => $entries]);
     }
     public function create()
@@ -116,6 +118,10 @@ class WorkController extends Controller
         return redirect()->route('attendance.index');
     }
     public function indexrest()
+    {
+        return view('rest');
+    }
+    public function showRestPage()
     {
         return view('rest');
     }
