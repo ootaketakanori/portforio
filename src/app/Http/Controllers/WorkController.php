@@ -24,7 +24,6 @@ class WorkController extends Controller
     public function index()
     {
         $entries = Attendance::simplePaginate(5);
-        dd($entries);
 
         return view('attendance', ['entries' => $entries]);
     }
@@ -45,7 +44,7 @@ class WorkController extends Controller
         return view('attendance', ['entries' => $entries]);
         //attendanceテーブルにデータを挿入//
         Attendance::create([
-            'action' => 'starWork',
+            'action' => 'startWork',
             'date' => $currentDate,
             'start_time' => Carbon::now(),
         ]);
@@ -78,7 +77,7 @@ class WorkController extends Controller
         Attendance::create([
             'action' => 'start_Break',
             'date' => $currentDate,
-            'start_brerak' => Carbon::now(),
+            'start_break' => Carbon::now(),
         ]);
 
         return view('attendance', ['entries' => $entries]);
@@ -117,12 +116,12 @@ class WorkController extends Controller
         //後のページのデータ取得、処理//
         return redirect()->route('attendance.index');
     }
-    public function indexrest()
-    {
-        return view('rest');
-    }
-    public function showRestPage()
-    {
-        return view('rest');
-    }
+    //public function indexrest()
+    //{
+    //return view('rest');
+    //}
+    //public function showRestPage()
+    //{
+    //return view('rest');
+    //}
 }
