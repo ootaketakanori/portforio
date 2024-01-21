@@ -10,6 +10,10 @@ class RegisteredUserController extends Controller
 {
     public function index()
     {
-        return view('rest');
+        return view('auth.register');
+    }
+    public function create()
+    {
+        return view('auth.register');
     }
 }

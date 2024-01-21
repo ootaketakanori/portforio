@@ -16,7 +16,9 @@ use App\Http\Controllers\WorkController;
 |
 */
 
-Route::get('/register', [RegisteredUserController::class, 'create']);
+Route::get('/', [WorkController::class, 'create'])->name('rest');
+
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('auth.register');
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
@@ -26,10 +28,7 @@ Route::post('/authenticated', [AuthenticatedSessionController::class, 'destroy']
 
 Route::get('/authenticated', [AuthenticatedSessionController::class, 'store'])->middleware('auth');
 
-Route::get('/', [WorkController::class, 'create'])->name('rest');
-
 Route::post('/attendance', [WorkController::class, 'store']);
-
 
 
 Route::get('/start-work', [WorkController::class, 'startWork'])->name('startWork');
@@ -41,22 +40,16 @@ Route::get('/next-page', function () {
 })->name('work.time');
 
 
-
 Route::get('/attendance', [WorkController::class, 'index'])->name('attendance.index');
 Route::get('/previous-page', [WorkController::class, 'previousPage'])->name('previousPage');
 Route::get('/next-page', [WorkController::class, 'nextPage'])->name('nextPage');
 
 Route::get('/attendance/search', [WorkController::class, 'search']);
 
-//Route::get('dates/search', 'WorkController@search');
-
 Route::get('/dates/search', 'WorkController@search')->name('dates.search');
-
-// routes/web.php
 
 Route::group(['middleware' => 'auth'], function () {
 });
-
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
@@ -64,12 +57,6 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name(
 
 Route::get('/attendance-day', [WorkController::class, 'index'])->name('attendance.index');
 
-
-
-//Route::middleware('auth')->group(function () {
-//Route::get('/', [AuthenticatedSessionController::class, 'rest']);
-//});
-
 Route::get('/register', [RegisteredUserController::class, 'index']);
 
-//Route::get('/', [WorkController::class, 'showRestPage'])->name('rest');
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');

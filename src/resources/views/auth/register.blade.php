@@ -8,7 +8,7 @@
 @section('content')
 <div class="container">
     <h2 class="subheader">会員登録</h2>
-    <form action="/register" method="post">
+    <form action="{{ url('/register') }}" method="post">
         @csrf
         <div class="input-group mb-3">
             <input type="text" class="form-control" id="name" name="name" placeholder="名前" value="{{ old('name') }}" required>

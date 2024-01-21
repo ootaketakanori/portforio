@@ -120,8 +120,8 @@ class WorkController extends Controller
     //{
     //return view('rest');
     //}
-    //public function showRestPage()
-    //{
-    //return view('rest');
-    //}
+    public function showRestPage()
+    {
+        return view('rest');
+    }
 }
