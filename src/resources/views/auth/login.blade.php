@@ -10,7 +10,7 @@
 <div class="content">
     <h2>ログイン</h2>
     @if (Auth::check())
-    <form action="{{ route('rest') }}" method="post">
+    <form action="{{ url('/login') }}" method="post">
         @csrf
         <div class="form-group">
             <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
