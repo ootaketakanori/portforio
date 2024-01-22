@@ -9,21 +9,23 @@
 
 <div class="content">
     <h2>ログイン</h2>
-    <form action="{{ route('rest')" method="post">
+    @if (Auth::check())
+    <form action="{{ route('rest') }}" method="post">
         @csrf
         <div class="form-group">
             <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
-</div>
-<div class="form__error">
-    @error('email')
-    {{ $message }}
-    @enderror
-</div>
-<input type="password" name="password" placeholder="パスワード" value="{{ old('email') }}">
-<button class="button-submit" type="submit">ログイン</button>">
-</form>
-<p>アカウントを""お持ちでない方はこちらから</p>
-<a class="register__button-submit" href="/register">会員登録</a>
+        </div>
+        <div class="form__error">
+            @error('email')
+            {{ $message }}
+            @enderror
+        </div>
+        <input type="password" name="password" placeholder="パスワード" value="{{ old('email') }}">
+        <button class="button-submit" type="submit">ログイン</button>">
+    </form>
+    @endif
+    <p>アカウントを""お持ちでない方はこちらから</p>
+    <a class="register__button-submit" href="/register">会員登録</a>
 </div>
 
 @endsection
