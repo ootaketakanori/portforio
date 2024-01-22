@@ -17,4 +17,12 @@ class AuthenticatedSessionController extends Controller
     {
         return view('auth.login');
     }
+    public function store(Request $request)
+    {
+        $request->authenticate();
+
+        $request - session()->regenerate();
+
+        return redirect()->intended('rest');
+    }
 }

@@ -20,6 +20,9 @@ Route::get('/', [WorkController::class, 'create'])->name('rest');
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('auth.register');
 
+Route::post('/register', [RegisteredUserController::class, 'store'])->name('register'); // 1/21修正
+
+
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
 Route::get('/authenticated', [AuthenticatedSessionController::class, 'create'])->middleware('auth');

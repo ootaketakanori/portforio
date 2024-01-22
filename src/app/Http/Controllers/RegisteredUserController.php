@@ -16,4 +16,8 @@ class RegisteredUserController extends Controller
     {
         return view('auth.register');
     }
+    public function store(Request $request) // 1/21修正
+    {
+        return view('auth.rest');
+    }
 }
