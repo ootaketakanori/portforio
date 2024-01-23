@@ -9,8 +9,7 @@
 
 <div class="content">
     <h2>ログイン</h2>
-    @if (Auth::check())
-    <form action="{{ url('/login') }}" method="post">
+    <form action="{{ url('/register') }}" method="post">
         @csrf
         <div class="form-group">
             <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
@@ -20,10 +19,9 @@
             {{ $message }}
             @enderror
         </div>
-        <input type="password" name="password" placeholder="パスワード" value="{{ old('email') }}">
-        <button class="button-submit" type="submit">ログイン</button>">
+        <input type="password" name="password" placeholder="パスワード" value="{{ old('password') }}">
+        <button class="button-submit" type="submit">ログイン</button>
     </form>
-    @endif
     <p>アカウントを""お持ちでない方はこちらから</p>
     <a class="register__button-submit" href="/register">会員登録</a>
 </div>
