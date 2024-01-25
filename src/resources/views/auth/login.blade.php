@@ -9,7 +9,7 @@
 
 <div class="content">
     <h2>ログイン</h2>
-    <form action="{{ url('/register') }}" method="post">
+    <form action="/login" method="post">
         @csrf
         <div class="form-group">
             <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
@@ -19,7 +19,7 @@
             {{ $message }}
             @enderror
         </div>
-        <input type="password" name="password" placeholder="パスワード" value="{{ old('password') }}">
+        <input type="password" name="password" placeholder="パスワード">
         <button class="button-submit" type="submit">ログイン</button>
     </form>
     <p>アカウントを""お持ちでない方はこちらから</p>

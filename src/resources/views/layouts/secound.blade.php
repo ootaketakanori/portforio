@@ -18,19 +18,19 @@
             <h1 class="header-h1">
                 Atte
             </h1>
+            @if (Auth::check())
             <nav class="header-nav">
                 <ul class="haeader__ul">
                     <li class="header__li"><a href="{{ route('rest') }}">ホーム</a></li>
 
                     <li class=" header__li"><a href="{{ route('attendance.index') }}">日付一覧</a></li>
-                    @if (Auth::check())
-                    <form class="form" action="logout" method="post">
+                    <form class="form" action="/logout" method="post">
                         @csrf
-                        <li class="header__li"><a href="#">ログアウト</a></li>
+                        <button class="header__li">ログアウト</button>
                     </form>
-                    @endif
                 </ul>
             </nav>
+            @endif
         </div>
     </header>
 

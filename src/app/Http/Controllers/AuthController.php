@@ -10,4 +10,13 @@ class AuthController extends Controller
     {
         return view('rest');
     }
+    //1/24 20:30 修正
+    public function loginView()
+    {
+        return view('auth.login');
+    }
+    public function rest()
+    {
+        return view('rest');
+    }
 }

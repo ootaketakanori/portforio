@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisteredUserController;
-use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\WorkController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,20 +16,15 @@ use App\Http\Controllers\WorkController;
 |
 */
 
-Route::get('/', [WorkController::class, 'create'])->name('rest');
+Route::get('/rest', [WorkController::class, 'create'])->name('rest');
 
-Route::get('/register', [RegisteredUserController::class, 'create'])->name('auth.register');
 
-Route::post('/register', [RegisteredUserController::class, 'store'])->name('register'); // 1/21修正
 
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-Route::get('/authenticated', [AuthenticatedSessionController::class, 'create'])->middleware('auth');
 
-Route::post('/authenticated', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth');
 
-Route::get('/authenticated', [AuthenticatedSessionController::class, 'store'])->middleware('auth');
 
 Route::post('/attendance', [WorkController::class, 'store']);
 
@@ -51,15 +46,20 @@ Route::get('/attendance/search', [WorkController::class, 'search']);
 
 Route::get('/dates/search', 'WorkController@search')->name('dates.search');
 
-Route::group(['middleware' => 'auth'], function () {
-});
 
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 Route::get('/attendance-day', [WorkController::class, 'index'])->name('attendance.index');
 
-Route::get('/register', [RegisteredUserController::class, 'index']);
 
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+
+//ログアウト
+
+//1/24 16:30修正(ログイン)
+Route::get('/login', [AuthController::class, 'loginView']);
+
+//1/25 16:10 打刻画面（ホーム）
+//Route::get('/', [AuthController::class, 'rest']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', [AUthController::class, 'rest']);
+});
