@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->bcrypt($request->password),
+            'password' => bcrypt($request->password),
         ]);
         //ユーザーログイン
         auth()->login($user);

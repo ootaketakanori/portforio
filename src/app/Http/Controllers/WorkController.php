@@ -14,8 +14,8 @@ class WorkController extends Controller
 
     public function date(Request $request)
     {
-
-        $entries = Attendance::simplePaginate(5);
+        //1/26simplePaginate
+        $entries = Attendance::Paginate(5);
         $date = Carbon::today();
         $today = Rest::whereDate('created_at', $date)->get();
 
@@ -24,7 +24,8 @@ class WorkController extends Controller
 
     public function index()
     {
-        $entries = Attendance::simplePaginate(5);
+        //1/26simplePaginate
+        $entries = Attendance::Paginate(5);
 
         return view('attendance', ['entries' => $entries]);
     }
@@ -32,24 +33,24 @@ class WorkController extends Controller
     {
         return view('rest');
     }
-    //public function startWork(Request $request)
-    //{
+    public function startWork(Request $request)
+    {
 
-    //$this->saveTimestampToSession('startWork');
+        $this->saveTimestampToSession('startWork');
 
-    //現在時刻：送信するデータをセット//
-    //$currentDate = now()->toDateString();
-    //全てのデータを取得//
-    //$attendances = DB::table('attendances')->get();
-    //$entries = Attendance::simplePaginate(5);
-    //return view('attendance', ['entries' => $entries]);
-    //attendanceテーブルにデータを挿入//
-    //Attendance::create([
-    //'action' => 'startWork',
-    //'date' => $currentDate,
-    //'start_time' => Carbon::now(),
-    //]);
-    //}
+        //現在時刻：送信するデータをセット
+        $currentDate = now()->toDateString();
+        //全てのデータを取得//
+        $attendances = DB::table('attendances')->get();
+        $entries = Attendance::simplePaginate(5);
+        return view('attendance', ['entries' => $entries]);
+        //attendanceテーブルにデータを挿入
+        Attendance::create([
+            'action' => 'startWork',
+            'date' => $currentDate,
+            'start_time' => Carbon::now(),
+        ]);
+    }
 
 
 
@@ -57,9 +58,9 @@ class WorkController extends Controller
     {
         $this->saveTimestampToSession('endWork');
         $currentDate = now()->toDateString();
-
+        //1/26simplePaginate
         //全てのデータを取得//
-        $entries = Attendance::simplePaginate(5);
+        $entries = Attendance::Paginate(5);
         return view('attendance', ['entries' => $entries]);
 
         //Attendanceテーブルにデータを挿入//
@@ -73,14 +74,25 @@ class WorkController extends Controller
     {
 
         $currentDate = now()->toDateString();
+        //1/26ログインユーザーのIdを取得
+        $userId = auth()->id();
         //全てのデータを取得//
-        $entries = Attendance::simplePaginate(5);
-        Attendance::create([
-            'action' => 'start_Break',
-            'date' => $currentDate,
-            'start_break' => Carbon::now(),
-        ]);
-
+        //1/26simplePaginate
+        $entries = Attendance::Paginate(5);
+        //Attendance::create([
+        //'action' => //'start_Break',
+        //'date' => $currentDate,
+        //'start_break' => Carbon::now(),
+        //]);
+        //ログインユーザーがいる場合のみレコードを取得
+        if ($userId) {
+            Attendance::create([
+                'user_id' => $userId,
+                'action' => 'start_Break',
+                'date' => $currentDate,
+                'start_break' => now(),
+            ]);
+        }
         return view('attendance', ['entries' => $entries]);
     }
 
@@ -88,15 +100,30 @@ class WorkController extends Controller
     {
         $this->saveTimestampToSession('endBreak');
         $currentDate = now()->toDateString();
+        $entries = Attendance::Paginate(5);
+
+        //1/26ログインユーザーのIDを取得
+        $userId = auth()->id();
         //全てのデータを取得//
         $attendances = DB::table('attendances')->get();
-        Attendance::create([
-            'action' => 'endBreak',
-            'date' => $currentDate,
-            'end_break' => Carbon::now(),
-        ]);
+        if ($userId) {
+            Attendance::create([
+                'user_id' => $userId,
+                'action' => 'end_Break',
+                'date' => $currentDate,
+                'end_break' => now(),
+            ]);
+            return view('attendance', ['entries' => $entries]);
+        }
 
-        return redirect()->route('attendance.index');
+        //Attendance::create([
+        //'action' => //'endBreak',
+        //'date' => $currentDate,
+        //'end_break' => Carbon::now(),
+        //]);
+
+        //return redirect()->route('attendance.index');
+
     }
     public function saveTimestampToSession($key)
     {
@@ -125,19 +152,19 @@ class WorkController extends Controller
     {
         return view('rest');
     }
-    public function storeAttendanceStart(Request $request)
-    {
-        //ユーザーID取得
-        $userId = Auth::id();
-        //出勤情報を挿入
-        Attendance::create([
-            'user_id' => $userId,
-            'date' => now()->toDateString(),
-            'start_time' => now(),
-        ]);
-        //出勤情報を再取得
-        $entries = Attendance::where('user_id', $userId)->simplePagination(5);
-        //リダイレクト
-        return view('attendance', ['entries' => $entries])->with('success', '勤務を開始しました');
-    }
+    //public function storeAttendanceStart(Request $request)
+    //{
+    //ユーザーID取得
+    //$userId = Auth::id();
+    //出勤情報を挿入
+    //Attendance::create([
+    //'user_id' => $userId,
+    // 'date' => now()//->toDateString(),
+    // 'start_time' => now(),
+    //]);
+    //出勤情報を再取得1/26simplePaginate
+    //$entries = //Attendance::where('user_id', $userId)->Paginate(5);
+    //リダイレクト
+    //return view('attendance', ['entries' => $entries])->with('success', '勤務を開始しました');
+    //}
 }

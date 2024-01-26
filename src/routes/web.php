@@ -61,5 +61,5 @@ Route::get('/login', [AuthController::class, 'loginView']);
 //Route::get('/', [AuthController::class, 'rest']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [AUthController::class, 'rest']);
+    Route::get('/', [AuthController::class, 'rest']);
 });
