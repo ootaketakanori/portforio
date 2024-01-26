@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Rest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class WorkController extends Controller
 {
@@ -31,24 +32,24 @@ class WorkController extends Controller
     {
         return view('rest');
     }
-    public function startWork(Request $request)
-    {
+    //public function startWork(Request $request)
+    //{
 
-        $this->saveTimestampToSession('startWork');
+    //$this->saveTimestampToSession('startWork');
 
-        //現在時刻：送信するデータをセット//
-        $currentDate = now()->toDateString();
-        //全てのデータを取得//
-        $attendances = DB::table('attendances')->get();
-        $entries = Attendance::simplePaginate(5);
-        return view('attendance', ['entries' => $entries]);
-        //attendanceテーブルにデータを挿入//
-        Attendance::create([
-            'action' => 'startWork',
-            'date' => $currentDate,
-            'start_time' => Carbon::now(),
-        ]);
-    }
+    //現在時刻：送信するデータをセット//
+    //$currentDate = now()->toDateString();
+    //全てのデータを取得//
+    //$attendances = DB::table('attendances')->get();
+    //$entries = Attendance::simplePaginate(5);
+    //return view('attendance', ['entries' => $entries]);
+    //attendanceテーブルにデータを挿入//
+    //Attendance::create([
+    //'action' => 'startWork',
+    //'date' => $currentDate,
+    //'start_time' => Carbon::now(),
+    //]);
+    //}
 
 
 
@@ -123,5 +124,20 @@ class WorkController extends Controller
     public function showRestPage()
     {
         return view('rest');
+    }
+    public function storeAttendanceStart(Request $request)
+    {
+        //ユーザーID取得
+        $userId = Auth::id();
+        //出勤情報を挿入
+        Attendance::create([
+            'user_id' => $userId,
+            'date' => now()->toDateString(),
+            'start_time' => now(),
+        ]);
+        //出勤情報を再取得
+        $entries = Attendance::where('user_id', $userId)->simplePagination(5);
+        //リダイレクト
+        return view('attendance', ['entries' => $entries])->with('success', '勤務を開始しました');
     }
 }
