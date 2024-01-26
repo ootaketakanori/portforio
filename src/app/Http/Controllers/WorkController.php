@@ -72,7 +72,8 @@ class WorkController extends Controller
     }
     public function startBreak(Request $request)
     {
-
+        //1/26 18:40
+        $this->saveTimestampToSession('endWork');
         $currentDate = now()->toDateString();
         //1/26ログインユーザーのIdを取得
         $userId = auth()->id();
