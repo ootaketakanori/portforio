@@ -15,7 +15,7 @@ class WorkController extends Controller
     public function date(Request $request)
     {
         //1/26simplePaginate
-        $entries = Attendance::Paginate(5);
+        $entries = Attendance::with('user')->Paginate(5);
         $date = Carbon::today();
         $today = Rest::whereDate('created_at', $date)->get();
 
@@ -25,7 +25,7 @@ class WorkController extends Controller
     public function index()
     {
         //1/26simplePaginate
-        $entries = Attendance::Paginate(5);
+        $entries = Attendance::with('user')->Paginate(5);
 
         return view('attendance', ['entries' => $entries]);
     }

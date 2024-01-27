@@ -35,7 +35,7 @@
         <tbody>
             @foreach ($entries as $entry)
             <tr>
-                <td>名前: {{ $entry['name'] }}</td>
+                <td>名前: {{ $entry->user->name }}</td>
                 <td>勤務開始:{{ $entry['startWork']  }}</td>
                 <td>勤務終了:{{ $entry['endWork']  }}</td>
                 <td>休憩時間:{{ $entry['breakTime'] }}</td>
