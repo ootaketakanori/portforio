@@ -33,24 +33,36 @@ class WorkController extends Controller
     {
         return view('rest');
     }
+
     public function startWork(Request $request)
     {
+        // ボタンを押したときの時間を取得
+        $startWorkTime = now();
+        // セッションに保存
+        $this->saveTimestampToSession('startWork', $startWorkTime);
 
-        $this->saveTimestampToSession('startWork');
-
-        //現在時刻：送信するデータをセット
+        // 現在時刻：送信するデータをセット
         $currentDate = now()->toDateString();
-        //全てのデータを取得//
-        $attendances = DB::table('attendances')->get();
-        $entries = Attendance::simplePaginate(5);
-        return view('attendance', ['entries' => $entries]);
-        //attendanceテーブルにデータを挿入
-        Attendance::create([
+        // ログインユーザーの ID を取得
+        $userId = auth()->id();
+        // attendance テーブルにデータを挿入
+        $attendance = Attendance::create([
+            'user_id' => $userId, // ログインユーザーの ID を指定
             'action' => 'startWork',
             'date' => $currentDate,
-            'start_time' => Carbon::now(),
+            'start_time' => $startWorkTime,
         ]);
+        // 全てのデータを取得
+        $entries = Attendance::with('user')->paginate(5);
+
+        // ビューにデータを渡す
+        return view('attendance', ['entries' => $entries, 'startWorkTime' => $attendance->start_time]);
     }
+
+
+
+
+
 
 
 
