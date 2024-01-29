@@ -8,7 +8,6 @@
 @section('content')
 
 
-</form>
 <div class="main__inner">
     <div class="page">
         <form action="{{ route('previousPage') }}" method="get">
