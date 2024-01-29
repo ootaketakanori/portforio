@@ -43,8 +43,10 @@ class WorkController extends Controller
 
         // 現在時刻：送信するデータをセット
         $currentDate = now()->toDateString();
+
         // ログインユーザーの ID を取得
         $userId = auth()->id();
+
         // attendance テーブルにデータを挿入
         $attendance = Attendance::create([
             'user_id' => $userId, // ログインユーザーの ID を指定
@@ -52,6 +54,7 @@ class WorkController extends Controller
             'date' => $currentDate,
             'start_time' => $startWorkTime,
         ]);
+
         // 全てのデータを取得
         $entries = Attendance::with('user')->paginate(5);
 
