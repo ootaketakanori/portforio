@@ -30,7 +30,7 @@ Route::post('/attendance', [WorkController::class, 'store']);
 
 
 Route::get('/start-work', [WorkController::class, 'startWork'])->name('startWork');
-Route::get('/end-work', [WorkController::class, 'endWork'])->name('endWork');;
+Route::get('/end-work', [WorkController::class, 'endWork'])->name('endWork');
 Route::get('/start-break', [WorkController::class, 'startBreak'])->name('startBreak');
 Route::get('/end-break', [WorkController::class, 'endBreak'])->name('endBreak');
 Route::get('/next-page', function () {
