@@ -53,6 +53,7 @@ class WorkController extends Controller
             'action' => 'startWork',
             'date' => $currentDate,
             'start_time' => $startWorkTime,
+            'end_time' => null,
         ]);
 
         // 全てのデータを取得
