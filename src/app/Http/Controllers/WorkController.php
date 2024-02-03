@@ -25,7 +25,7 @@ class WorkController extends Controller
     public function index()
     {
         //1/26simplePaginate
-        $entries = Attendance::with('user')->Paginate(5);
+        $entries = Attendance::with('user')->orderBy('start_time', 'desc')->Paginate(5);
 
         return view('attendance', ['entries' => $entries]);
     }
@@ -53,11 +53,11 @@ class WorkController extends Controller
             'action' => 'startWork',
             'date' => $currentDate,
             'start_time' => $startWorkTime,
-            'end_time' => null,
+            //'end_time' => null,
         ]);
 
         // 全てのデータを取得
-        $entries = Attendance::with('user')->paginate(5);
+        $entries = Attendance::with('user')->Paginate(5);
 
         // ビューにデータを渡す
         return view('attendance', ['entries' => $entries, 'startWorkTime' => $attendance->start_time]);
@@ -72,19 +72,31 @@ class WorkController extends Controller
 
     public function endWork(Request $request)
     {
-        $this->saveTimestampToSession('endWork');
+        // ボタンを押したときの時間を取得
+        $endWorkTime = now();
+        //ログインユーザーのIDを取得
+        $userId = auth()->id();
+        //現在時刻データ送信
         $currentDate = now()->toDateString();
+
         //1/26simplePaginate
         //全てのデータを取得//
-        $entries = Attendance::Paginate(5);
-        return view('attendance', ['entries' => $entries]);
-
         //Attendanceテーブルにデータを挿入//
-        Attendance::create([
-            'action' => 'endWork',
-            'date' => $currentDate,
-            'end_time' => Carbon::now(),
-        ]);
+        $attendance = Attendance::where('user_id', $userId)
+            ->where('date', $currentDate)
+            ->whereNULL('end_time') //勤務終了時間が記録されてないレコードを探す
+            ->first();
+
+        //勤務終了時刻を更新
+        if ($attendance) {
+            $attendance->end_time = $endWorkTime;
+            $attendance->save();
+        } else {
+        }
+        $entries = Attendance::Paginate(5);
+
+        //ビューにデータを渡す
+        return view('attendance', ['entries' => $entries]);
     }
     public function startBreak(Request $request)
     {

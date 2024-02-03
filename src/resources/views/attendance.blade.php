@@ -10,7 +10,7 @@
 
 <div class="main__inner">
     <div class="page">
-        <form action="{{ route('previousPage') }}" method="get">
+        <form action="{{ route('previousPage') }}" method="post">
             @csrf
             <button type="submit">
                 < </button>
@@ -36,7 +36,7 @@
             <tr>
                 <td>名前: {{ $entry->user->name }}</td>
                 <td>勤務開始:{{ $entry->start_time }}</td>
-                <td>勤務終了:{{ $entry['endWork']  }}</td>
+                <td>勤務終了:{{ $entry->end_time }}</td>
                 <td>休憩時間:{{ $entry['breakTime'] }}</td>
                 <td>勤務時間:{{ $entry[''] }}</td>
             </tr>
@@ -45,4 +45,4 @@
     </table>
 </div>
 @endsection
-{{ $entries->links() }}
+{{ $entries->withPath('/attendance')->links() }}
