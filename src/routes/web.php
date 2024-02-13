@@ -23,16 +23,19 @@ Route::get('/rest', [WorkController::class, 'create'])->name('rest');
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
 
-
+Route::get('/register', [RegisteredUserController::class, 'showRegistrationForm'])->name('register');
 
 Route::post('/attendance', [WorkController::class, 'store']);
 
 
-Route::get('/start-work', [WorkController::class, 'startWork'])->name('startWork');
+Route::get('/start-work', [WorkController::class, 'startWork'])->name('startWork')->middleware('auth');
 Route::post('/end-work', [WorkController::class, 'endWork'])->name('endWork');
-Route::get('/start-break', [WorkController::class, 'startBreak'])->name('startBreak');
-Route::get('/end-break', [WorkController::class, 'endBreak'])->name('endBreak');
+Route::post('/start-break', [WorkController::class, 'startBreak'])->name('startBreak');
+Route::post('/end-break', [WorkController::class, 'endBreak'])->name('endBreak');
 Route::get('/next-page', function () {
     return view('work_time');
 })->name('work.time');
@@ -63,3 +66,7 @@ Route::get('/login', [AuthController::class, 'loginView']);
 Route::middleware('auth')->group(function () {
     Route::get('/', [AuthController::class, 'rest']);
 });
+
+//休憩開始、休憩終了2/5
+Route::post('/start-break', [WorkController::class, 'startBreak'])->name('startBreak');
+Route::post('/end-brek', [WorkController::class, 'endBrerk']);

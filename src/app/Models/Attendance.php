@@ -20,6 +20,11 @@ class Attendance extends Model
 
     protected $table = 'attendances';
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     public function getData()
     {
         return $this->all();

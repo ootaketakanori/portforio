@@ -11,15 +11,15 @@
     <form action="{{ url('/register') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-            <input type="text" class="form-control" name="name" placeholder="名前" value="{{ old('name') }}" required>
+            <input type="text" class="form-control" name="username" placeholder="名前" value="{{ old('username') }}" required>
             <div class="form-error">
-                @error('name')
+                @error('username')
                 {{ $message }}
                 @enderror
             </div>
         </div>
         <div class="input-group mb-3">
-            <input type="email" class="form-control" name="email" placeholder="メールアドレス" value="{{ old('name') }}" required>
+            <input type="email" class="form-control" name="email" placeholder="メールアドレス" value="{{ old('email') }}" required>
             <div class="form-error">
                 @error('email')
                 {{ $message }}

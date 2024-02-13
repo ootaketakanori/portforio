@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use App\Models\Rest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class WorkController extends Controller
 {
@@ -36,40 +37,35 @@ class WorkController extends Controller
 
     public function startWork(Request $request)
     {
-        // ボタンを押したときの時間を取得
-        $startWorkTime = now();
-        // セッションに保存
-        $this->saveTimestampToSession('startWork', $startWorkTime);
+        if (Auth::check()) {
+            $userId = Auth::id();
+            Log::info("Logged in user ID: " . $userId);
 
-        // 現在時刻：送信するデータをセット
-        $currentDate = now()->toDateString();
+            // ボタンを押したときの時間を取得
+            $startWorkTime = now();
+            // セッションに保存
+            $this->saveTimestampToSession('startWork', $startWorkTime);
 
-        // ログインユーザーの ID を取得
-        $userId = auth()->id();
+            // 現在時刻：送信するデータをセット
+            $currentDate = now()->toDateString();
 
-        // attendance テーブルにデータを挿入
-        $attendance = Attendance::create([
-            'user_id' => $userId, // ログインユーザーの ID を指定
-            'action' => 'startWork',
-            'date' => $currentDate,
-            'start_time' => $startWorkTime,
-            //'end_time' => null,
-        ]);
+            // attendance テーブルにデータを挿入
+            $attendance = Attendance::create([
+                'user_id' => $userId, // ログインユーザーの ID を指定
+                'date' => $currentDate,
+                'start_time' => $startWorkTime,
+            ]);
 
-        // 全てのデータを取得
-        $entries = Attendance::with('user')->Paginate(5);
+            // 全てのデータを取得
+            $entries = Attendance::with('user')->Paginate(5);
 
-        // ビューにデータを渡す
-        return view('attendance', ['entries' => $entries, 'startWorkTime' => $attendance->start_time]);
+            // ビューにデータを渡す
+            return view('attendance', ['entries' => $entries, 'startWorkTime' => $attendance->start_time]);
+        } else {
+            Log::error("No authenticated user.");
+            // 未認証ユーザーのための処理、例えばリダイレクト等をここに記述
+        }
     }
-
-
-
-
-
-
-
-
     public function endWork(Request $request)
     {
         // ボタンを押したときの時間を取得
@@ -87,73 +83,84 @@ class WorkController extends Controller
             ->whereNULL('end_time') //勤務終了時間が記録されてないレコードを探す
             ->first();
 
-        //勤務終了時刻を更新
+        // 勤務終了時刻と勤務時間を更新
         if ($attendance) {
             $attendance->end_time = $endWorkTime;
-            $attendance->save();
-        } else {
-        }
-        $entries = Attendance::Paginate(5);
 
-        //ビューにデータを渡す
-        return view('attendance', ['entries' => $entries]);
+            // 勤務時間を計算（Carbonインスタンスの差分を秒数で取得し、時間:分:秒形式に変換）
+            $workDurationSeconds = $attendance->start_time->diffInSeconds($endWorkTime);
+            $hours = floor($workDurationSeconds / 3600);
+            $minutes = floor(($workDurationSeconds / 60) % 60);
+            $seconds = $workDurationSeconds % 60;
+            $attendance->work_duration = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+            $attendance->save();
+
+            // リダイレクトやビューの表示など、後続の処理
+        } else {
+
+            $entries = Attendance::Paginate(5);
+
+            //ビューにデータを渡す
+            return view('attendance', ['entries' => $entries]);
+        }
     }
     public function startBreak(Request $request)
     {
-        //1/26 18:40
-        $this->saveTimestampToSession('endWork');
-        $currentDate = now()->toDateString();
-        //1/26ログインユーザーのIdを取得
-        $userId = auth()->id();
-        //全てのデータを取得//
-        //1/26simplePaginate
-        $entries = Attendance::Paginate(5);
-        //Attendance::create([
-        //'action' => //'start_Break',
-        //'date' => $currentDate,
-        //'start_break' => Carbon::now(),
-        //]);
-        //ログインユーザーがいる場合のみレコードを取得
-        if ($userId) {
-            Attendance::create([
-                'user_id' => $userId,
-                'action' => 'start_Break',
-                'date' => $currentDate,
-                'start_break' => now(),
+        $userId = auth()->id(); // ログインユーザーのIDを取得
+        // ユーザーの最新の勤務レコードを取得
+        $attendance = Attendance::where('user_id', $userId)
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+
+        if ($attendance) {
+            // 休憩レコードを作成
+            Rest::create([
+                'attendance_id' => $attendance->id,
+                'break_start_time' => now(),
+                'date' => now()->toDateString()
             ]);
+
+            // 処理後に特定のページにリダイレクト（メッセージなし）
+            return redirect()->route('attendance.index');
+        } else {
+            // 勤務レコードが見つからない場合、特定のページにリダイレクト（メッセージなし）
+            return redirect()->back();
         }
-        return view('attendance', ['entries' => $entries]);
     }
 
     public function endBreak(Request $request)
     {
-        $this->saveTimestampToSession('endBreak');
-        $currentDate = now()->toDateString();
-        $entries = Attendance::Paginate(5);
 
-        //1/26ログインユーザーのIDを取得
-        $userId = auth()->id();
-        //全てのデータを取得//
-        $attendances = DB::table('attendances')->get();
-        if ($userId) {
-            Attendance::create([
-                'user_id' => $userId,
-                'action' => 'end_Break',
-                'date' => $currentDate,
-                'end_break' => now(),
-            ]);
-            return view('attendance', ['entries' => $entries]);
+        $userId = auth()->id(); // ログインユーザーのIDを取得
+        $breakEndTime = now(); // 現在時刻を取得
+
+        // ユーザーの最新の勤務レコードを取得して、その中の最後の休憩レコードを見つける
+        $lastBreak = Rest::whereHas('attendance', function ($query) use ($userId) {
+            $query->where('user_id', $userId)->latest('date');
+        })->whereNull('break_end_time')->latest()->first();
+
+        if ($lastBreak) {
+            $lastBreak->break_end_time = $breakEndTime;
+            $lastBreak->save();
+
+            //休憩時間の計算
+            $breakDuration = $breakEndTime->diffInSeconds($lastBreak->break_start_time);
+
+            //関連するAttendanceレコードの更新
+            $attendance = $lastBreak->attendance;
+            $attendance->break_duration = ($attendance->break_duration ?? 0) + $breakDuration;
+            $attendance->save();
+            // フィードバックメッセージを表示しない場合でも、適切なページにリダイレクトする
+            return redirect()->route('attendance.index');
         }
 
-        //Attendance::create([
-        //'action' => //'endBreak',
-        //'date' => $currentDate,
-        //'end_break' => Carbon::now(),
-        //]);
-
-        //return redirect()->route('attendance.index');
-
+        // 休憩開始レコードが見つからない場合の処理も特にエラーメッセージを表示せずに、
+        // 単にリダイレクトするだけになる
+        return redirect()->back();
     }
+
     public function saveTimestampToSession($key)
     {
         //現在時刻を取得//
@@ -173,27 +180,9 @@ class WorkController extends Controller
         //後のページのデータ取得、処理//
         return redirect()->route('attendance.index');
     }
-    //public function indexrest()
-    //{
-    //return view('rest');
-    //}
-    public function showRestPage()
+
+    public function showRestPag()
     {
         return view('rest');
     }
-    //public function storeAttendanceStart(Request $request)
-    //{
-    //ユーザーID取得
-    //$userId = Auth::id();
-    //出勤情報を挿入
-    //Attendance::create([
-    //'user_id' => $userId,
-    // 'date' => now()//->toDateString(),
-    // 'start_time' => now(),
-    //]);
-    //出勤情報を再取得1/26simplePaginate
-    //$entries = //Attendance::where('user_id', $userId)->Paginate(5);
-    //リダイレクト
-    //return view('attendance', ['entries' => $entries])->with('success', '勤務を開始しました');
-    //}
 }

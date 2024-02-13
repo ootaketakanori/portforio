@@ -20,12 +20,12 @@
             <button type="submit">勤務終了</button>
         </form>
 
-        <form action="{{ route('startBreak') }}" method="get">
+        <form action="{{ route('startBreak') }}" method="post">
             @csrf
             <button type="submit">休憩開始</button>
         </form>
 
-        <form action="{{ route('endBreak') }}" method="get">
+        <form action="{{ route('endBreak') }}" method="post">
             @csrf
             <button type="submit">休憩終了</button>
         </form>

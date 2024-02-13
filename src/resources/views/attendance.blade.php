@@ -10,7 +10,7 @@
 
 <div class="main__inner">
     <div class="page">
-        <form action="{{ route('previousPage') }}" method="post">
+        <form action="{{ route('previousPage') }}" method="get">
             @csrf
             <button type="submit">
                 < </button>
@@ -37,12 +37,23 @@
                 <td>名前: {{ $entry->user->name }}</td>
                 <td>勤務開始:{{ $entry->start_time }}</td>
                 <td>勤務終了:{{ $entry->end_time }}</td>
-                <td>休憩時間:{{ $entry['breakTime'] }}</td>
-                <td>勤務時間:{{ $entry[''] }}</td>
+                <td>休憩時間:{{ $entry->break_duration }}</td>
+                <td>勤務時間:{{ $entry->work_duration }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
 </div>
-@endsection
 {{ $entries->withPath('/attendance')->links() }}
+
+@endsection
+
+@php
+// この関数は秒数をHH:MM:SS形式に変換します。
+function formatDuration($seconds) {
+$hours = floor($seconds / 3600);
+$minutes = floor(($seconds % 3600) / 60);
+$seconds = $seconds % 60;
+return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+}
+@endphp

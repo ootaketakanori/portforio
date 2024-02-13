@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class rest extends Model
+class Rest extends Model
 {
     use HasFactory;
 
@@ -17,6 +17,6 @@ class rest extends Model
     ];
     public function attendance()
     {
-        return $this->hasMany(attendance::class);
+        return $this->belongsTo(Attendance::class);
     }
 }
