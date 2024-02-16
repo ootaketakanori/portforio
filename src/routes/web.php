@@ -23,9 +23,10 @@ Route::get('/rest', [WorkController::class, 'create'])->name('rest');
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+//2/16 16:20
+//Route::get('/register', function () {
+//    return view('auth.register');
+//})->name('register');
 
 Route::get('/register', [RegisteredUserController::class, 'showRegistrationForm'])->name('register');
 

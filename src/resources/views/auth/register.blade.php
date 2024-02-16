@@ -11,9 +11,9 @@
     <form action="{{ url('/register') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" placeholder="名前" value="{{ old('username') }}" required>
+            <input type="text" class="form-control" name="name" placeholder="名前" value="{{ old('name') }}" required>
             <div class="form-error">
-                @error('username')
+                @error('name')
                 {{ $message }}
                 @enderror
             </div>

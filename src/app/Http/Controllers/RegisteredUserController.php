@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+
+
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Rest;
@@ -38,16 +40,21 @@ class RegisteredUserController extends Controller
 
     public function store(RegisterRequest $request)
     {
-        //バリデーション済みのデータを取得
-        $validateData = $request->validated();
+        // デバッグ
 
-        //dd($validateData);
+
+
+
+
+        //バリデーション済みのデータを取得
+        $validatedData = $request->validated();
+
 
         //Userモデルを使用してユーザーをデータベースに保存
         $user = User::create([
-            'name' => $validateData['username'],
-            'email' => $validateData['email'],
-            'password' => bcrypt($validateData['password'])
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password'])
         ]);
         //ユーザーログイン
         auth()->login($user);
