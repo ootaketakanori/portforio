@@ -20,18 +20,7 @@ class RegisteredUserController extends Controller
     {
         return view('auth.register');
     }
-    //public function store(Request $request)
-    //{
-    //$user = User::create([
-    //'name' => $request->name,
-    //'email' => $request->email,
-    // 'password' => bcrypt($request->password),
-    //]);
-    //ユーザーログイン
-    //auth()->login($user);
-    //return view('rest');
-    //}
-    // App\Http\Controllers\RegisteredUserController
+
 
     public function showRegistrationForm()
     {

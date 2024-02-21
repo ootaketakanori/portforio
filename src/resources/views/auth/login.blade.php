@@ -13,13 +13,16 @@
         @csrf
         <div class="form-group">
             <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
-        </div>
-        <div class="form__error">
             @error('email')
-            {{ $message }}
+            <div class="form-error">{{ $message }}</div>
             @enderror
         </div>
-        <input type="password" name="password" placeholder="パスワード">
+        <div class="form-group">
+            <input type="password" name="password" placeholder="パスワード">
+            @error('password')
+            <div class="form-error">{{ $message }}</div>
+            @enderror
+        </div>
         <button class="button-submit" type="submit">ログイン</button>
     </form>
     <p>アカウントを""お持ちでない方はこちらから</p>

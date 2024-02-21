@@ -11,7 +11,7 @@
     <form action="{{ url('/register') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-            <input type="text" class="form-control" name="name" placeholder="名前" value="{{ old('name') }}" required>
+            <input type="text" class="form-control" name="name" placeholder="名前" value="{{ old('name') }}" />
             <div class="form-error">
                 @error('name')
                 {{ $message }}
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="input-group mb-3">
-            <input type="email" class="form-control" name="email" placeholder="メールアドレス" value="{{ old('email') }}" required>
+            <input type="email" class="form-control" name="email" placeholder="メールアドレス" value="{{ old('email') }}" />
             <div class="form-error">
                 @error('email')
                 {{ $message }}
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="input-group mb-3">
-            <input type="password" class="form-control" name="password" placeholder="パスワード" required>
+            <input type="password" class="form-control" name="password" placeholder="パスワード">
             <div class="form-error">
                 @error('password')
                 {{ $message }}
@@ -35,8 +35,12 @@
             </div>
         </div>
         <div class="input-group mb-3">
-            <input type="password" class="form-control" name="confirm_password" placeholder="確認用パスワード" required>
-
+            <input type="password" class="form-control" name="confirm_password" placeholder="確認用パスワード">
+            <div class="form-error">
+                @error('confirm_password')
+                {{ $message }}
+                @enderror
+            </div>
         </div>
         <button class="btn btn-primary" type="submit">会員登録</button>
     </form>
