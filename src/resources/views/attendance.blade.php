@@ -1,7 +1,7 @@
 @extends('layouts.secound')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/attendancce.css') }}">
+<link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
 @endsection
 
 
@@ -10,15 +10,17 @@
 
 <div class="main__inner">
     <div class="page">
-        <form action="{{ route('previousPage') }}" method="get">
+        <form class="page__form" action="{{ route('previousPage') }}" method="get">
             @csrf
-            <button type="submit">
-                < </button>
+
+            <a class="page__link" href="{{ $entries->previousPageUrl() }}">&lt;</a>
         </form>
         <p class="date">{{ Carbon\Carbon::today()->format('Y/m/d') }}</p>
-        <form action="{{ route('nextPage') }}" method="get">
+        <form class="page__form-2" action="{{ route('nextPage') }}" method="get">
             @csrf
-            <button type="submit">></button>
+            <a class="page__link-2" href="{{ $entries->nextPageUrl() }}">&gt;</a>
+
+
         </form>
     </div>
     <table class="main-table">
@@ -37,8 +39,8 @@
                 <td>名前: {{ $entry->user->name }}</td>
                 <td>勤務開始:{{ $entry->start_time }}</td>
                 <td>勤務終了:{{ $entry->end_time }}</td>
-                <td>休憩時間:{{ $entry->break_duration }}</td>
-                <td>勤務時間:{{ $entry->work_duration }}</td>
+                <td>休憩時間:{{ formatDuration($entry->break_duration) }}</td>
+                <td>勤務時間:{{ formatDuration($entry->work_duration) }}</td>
             </tr>
             @endforeach
         </tbody>

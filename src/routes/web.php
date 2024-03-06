@@ -18,11 +18,14 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/rest', [WorkController::class, 'create'])->name('rest');
 
+Route::post('/end-work2', [WorkController::class, 'endWork'])->name('endWork');
 
 
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
+//2/27 Authenticated.Requestのバリデーションのエラー表示はAuthControllerのstoreアクションのルーティングが抜けてたため
+Route::post('/login', [AuthController::class, 'store']);
 //2/16 16:20
 //Route::get('/register', function () {
 //    return view('auth.register');
@@ -32,11 +35,12 @@ Route::get('/register', [RegisteredUserController::class, 'showRegistrationForm'
 
 Route::post('/attendance', [WorkController::class, 'store']);
 
+Route::get('/attendance', [WorkController::class, 'endWork'])->name('attendance.index');
 
-Route::get('/start-work', [WorkController::class, 'startWork'])->name('startWork')->middleware('auth');
-Route::post('/end-work', [WorkController::class, 'endWork'])->name('endWork');
+Route::post('/start-work', [WorkController::class, 'startWork'])->name('startWork')->middleware('auth');
 Route::post('/start-break', [WorkController::class, 'startBreak'])->name('startBreak');
 Route::post('/end-break', [WorkController::class, 'endBreak'])->name('endBreak');
+
 Route::get('/next-page', function () {
     return view('work_time');
 })->name('work.time');
@@ -61,13 +65,15 @@ Route::get('/attendance-day', [WorkController::class, 'index'])->name('attendanc
 //1/24 16:30修正(ログイン)
 Route::get('/login', [AuthController::class, 'loginView']);
 
+Route::get('/login', [AuthController::class, 'loginView'])->name('login');
+
+
 //1/25 16:10 打刻画面（ホーム）
 //Route::get('/', [AuthController::class, 'rest']);
-
+//2/24 storeが機能しないため変更(rest→index)
 Route::middleware('auth')->group(function () {
-    Route::get('/', [AuthController::class, 'rest']);
+    Route::get('/', [AuthController::class, 'index']);
 });
 
-//休憩開始、休憩終了2/5
-Route::post('/start-break', [WorkController::class, 'startBreak'])->name('startBreak');
-Route::post('/end-brek', [WorkController::class, 'endBrerk']);
+
+//Route::post('/end-break', [WorkController::class, 'endBrerk']);

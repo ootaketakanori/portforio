@@ -1,3 +1,4 @@
+
 .container {
     width: 500px;
     margin: 0 auto;
@@ -27,3 +28,36 @@
     width: 100%;
     margin-top: 10px;
 }
+.btn.btn-primary {
+    font-weight: bold;
+        border: none;
+        background-color: powderblue;
+}
+
+.login-link {
+text-align: center;
+}
+
+.a {
+    font-weight:bolder;
+    margin: auto;
+    width:21%;
+}
+.register__button-submit {
+
+
+        padding: 10px 20px;
+        /* パディングを適用 */
+        text-decoration: none;
+        /* テキストの下線を消す */
+        border-radius: 5px;
+        /* 角を丸める */
+        display: inline-block;
+        /* ブロック要素のように扱う */
+    }
+
+.footer {
+background-color: #ccc;
+    text-align: center;
+    padding: 1% 0% 1% 0%;
+    }

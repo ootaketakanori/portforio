@@ -20,14 +20,15 @@
             </h1>
             @if (Auth::check())
             <nav class="header-nav">
-                <ul class="haeader__ul">
+                <ul class="header__ul">
                     <li class="header__li"><a href="{{ route('rest') }}">ホーム</a></li>
-
-                    <li class=" header__li"><a href="{{ route('attendance.index') }}">日付一覧</a></li>
-                    <form class="form" action="/logout" method="post">
-                        @csrf
-                        <button class="header__li">ログアウト</button>
-                    </form>
+                    <li class="header__li"><a href="{{ route('attendance.index') }}">日付一覧</a></li>
+                    <li class="header__li"> <!-- li 要素で form を囲む -->
+                        <form action="/logout" method="POST">
+                            @csrf
+                            <button class="header__li" type="submit">ログアウト</button>
+                        </form>
+                    </li>
                 </ul>
             </nav>
             @endif

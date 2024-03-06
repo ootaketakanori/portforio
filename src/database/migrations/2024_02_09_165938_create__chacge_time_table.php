@@ -15,9 +15,8 @@ class CreateChacgeTimeTable extends Migration
     {
         // attendancesテーブルのbreak_durationカラムを変更する
         Schema::table('attendances', function (Blueprint $table) {
-            // br(eak_durationカラムが存在する場合、型をTIMEに変更する
-            $table->time('break_duration')->nullable()->change();
-            $table->string('work_duration')->nullable()->change();
+            $table->decimal('break_duration', 8, 2)->nullable()->change();
+            $table->decimal('work_duration', 8, 2)->nullable()->change();
         });
     }
 
@@ -31,8 +30,10 @@ class CreateChacgeTimeTable extends Migration
         Schema::table(
             'attendances',
             function (Blueprint $table) {
-                // break_durationカラムを元のinteger型（または他の型）に戻す
-                $table->integer('break_duration')->nullable()->change();
+                // ここには、カラムの型を変更する前の状態に戻すコードを記述します。
+                // 元の型が何であったかに応じて適切に変更してください。
+                $table->string('break_duration')->nullable()->change();
+                $table->string('work_duration')->nullable()->change();
             }
         );
     }

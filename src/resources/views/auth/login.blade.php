@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/authen.css') }}">
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
 @endsection
 
 
@@ -12,13 +12,13 @@
     <form action="/login" method="post">
         @csrf
         <div class="form-group">
-            <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
+            <input class="input-email" type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}" />
             @error('email')
             <div class="form-error">{{ $message }}</div>
             @enderror
         </div>
         <div class="form-group">
-            <input type="password" name="password" placeholder="パスワード">
+            <input class="input-password" type="password" name="password" placeholder="パスワード" />
             @error('password')
             <div class="form-error">{{ $message }}</div>
             @enderror

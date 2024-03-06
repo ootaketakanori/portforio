@@ -1,5 +1,8 @@
 
-
+.main__inner {
+    display: inline-block;
+    width:100%;
+}
 .main-table {
     width: 100%;
     border-collapse: collapse;
@@ -14,4 +17,98 @@
 .main-table td {
     padding: 10px;
     border: 1px solid #ccc;
+} 
+
+.page {
+
+align-items: center;
+    /* アイテムを垂直方向で中央に配置 */
+    display:inline-flex;
+        justify-content: center;
+    padding: 10px 0;
+    /* 上下のパディングを追加 */
+    width:100%;
+}
+
+.page__form {
+text-align: right;
+    width:20%;
+}
+.page__form-2 {
+        width: 20%;
+}
+
+.page__btn {
+background: none;
+    border: 2px solid powderblue;
+    color: powderblue;
+    /* 枠線のスタイルを設定 */
+    padding: 10px;
+    /* パディングを追加 */
+    cursor: pointer;
+    /* カーソルをポインターに設定 */
+}
+
+.date {
+    font-weight: bold;
+        text-align: center;
+    width:20%;
+/* 日付のスタイルを設定 */
+    margin: 0 20px;
+    /* マージンを追加してスペースを作る */
+}
+.pagination {
+    color: powderblue;
+        display: ruby-text;
+        text-align: center;
+}
+
+.footer {
+    text-align:center;
+    background-color: #ccc;
+}
+
+/* 全てのページネーションアイテムの色を変更 */
+.pagination a {
+    color: powderblue;
+    /* リンクの文字色を設定 */
+    font-weight:bold
+}
+
+/* アクティブページのページネーションアイテムの色を変更 */
+.pagination .active a {
+    background-color: powderblue;
+    /* アクティブリンクの背景色を設定 */
+    border-color: powderblue;
+    /* アクティブリンクの枠線色を設定 */
+    color: white;
+    /* アクティブリンクの文字色を設定 */
+}
+
+/* ホバー時のページネーションアイテムの色を変更 */
+.pagination a:hover {
+    background-color: #d3e0ea;
+    /* ホバー時の背景色を設定 */
+}
+
+/* ページネーションアイテムの無効化スタイルを変更 */
+.pagination .disabled a {
+    color: #ced4da;
+    /* 無効リンクの文字色を設定 */
+}
+
+.page__link {
+    margin: 0% -18% 0% 0%;
+        padding: 1% 2% 1% 2%;
+        color: powderblue;
+        font-weight: bolder;
+        border: 2px solid powderblue;
+}
+
+.page__link-2 {
+    margin: 0% -18% 0% -18%;
+        padding: 1% 2% 1% 2%;
+        color: powderblue;
+        font-weight: bolder;
+        border: 2px solid powderblue;
 }

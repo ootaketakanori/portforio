@@ -89,20 +89,19 @@ class WorkController extends Controller
 
             // 勤務時間を計算（Carbonインスタンスの差分を秒数で取得し、時間:分:秒形式に変換）
             $workDurationSeconds = $attendance->start_time->diffInSeconds($endWorkTime);
-            $hours = floor($workDurationSeconds / 3600);
-            $minutes = floor(($workDurationSeconds / 60) % 60);
-            $seconds = $workDurationSeconds % 60;
-            $attendance->work_duration = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+            // 勤務時間を秒数として保存
+            $attendance->work_duration = $workDurationSeconds;
 
             $attendance->save();
 
-            // リダイレクトやビューの表示など、後続の処理
+            // 成功時にattendance.indexにリダイレクト
+            return redirect()->route('attendance.index');
         } else {
 
             $entries = Attendance::Paginate(5);
 
             //ビューにデータを渡す
-            return view('attendance', ['entries' => $entries]);
+            return redirect()->route('attendance.index')->with('error', '対象の勤務記録が見つかりません。');
         }
     }
     public function startBreak(Request $request)
@@ -149,9 +148,10 @@ class WorkController extends Controller
             $breakDuration = $breakEndTime->diffInSeconds($lastBreak->break_start_time);
 
             //関連するAttendanceレコードの更新
-            $attendance = $lastBreak->attendance;
-            $attendance->break_duration = ($attendance->break_duration ?? 0) + $breakDuration;
-            $attendance->save();
+            // $attendance->break_durationを数値に変換し、非数値の場合は0として扱う
+            $existingDuration = floatval($lastBreak->attendance->break_duration ?? 0); // decimal型に適応
+            $lastBreak->attendance->break_duration = $existingDuration + $breakDuration;
+            $lastBreak->attendance->save();
             // フィードバックメッセージを表示しない場合でも、適切なページにリダイレクトする
             return redirect()->route('attendance.index');
         }

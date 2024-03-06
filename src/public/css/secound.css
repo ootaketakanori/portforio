@@ -1,35 +1,63 @@
+
+
 body {
     font-family: sans-serif;
     font-size: 16px;
     color: #333;
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
-header {
+.header {
     background-color: #000;
     color: #fff;
     padding: 20px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    /* ロゴとナビゲーションを両端に配置 */
+    width: 100%;
 }
 
-header h1 {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-header nav {
+.header__inner {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* 必要に応じて調整 */
 }
 
-header nav ul {
+.header-h1 {
+    margin: 0;
+    padding: 0;
+    /* 他のスタイルはそのまま */
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+}
+
+.header__ul {
+    display: flex;
     list-style: none;
+    padding-left: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: flex-end;
+    /* リンクを右寄せに */
+    width: auto;
+    /* これまでの width: 100%; を auto に変更する */
 }
 
-header nav li {
-    margin-bottom: 10px;
+.header__li {
+    font-weight: bolder;
+
+    padding: 0px 0px;
+    /* 余白を適宜調整 */
+    display: inline-block;
+    /* li 要素をインラインブロックとして扱う */
 }
 
 header nav a {
@@ -41,28 +69,59 @@ header nav a:hover {
     color: #ccc;
 }
 
-main {
-    background-color: #fff;
-    padding: 20px;
+.header__li, .header__li form {
+    padding: 0 0px; /* 余白を適宜調整 */
+    display: inline-block; /* li 要素とform要素をインラインブロックとして扱う */
+    /* 他のスタイル */
 }
 
-main h1 {
-    font-size: 20px;
-    font-weight: bold;
+.header__li form {
+    margin: 0; /* フォームに余分なマージンが適用されないようにする */
+    padding: 0px 0px 0px 0px;
 }
 
-main p {
-    margin-bottom: 10px;
-}
-
-.btn {
-    background-color: #000;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
+.header__li button {
+    vertical-align: text-top;
+    background: none; /* ボタンの背景をクリアに */
+    border: none; /* ボタンのボーダーをクリアに */
+    color: #fff; /* ボタンのテキスト色を白に */
     cursor: pointer;
+    /* 他のスタイル */
+    font-size: 15px;
+}
+.header__li form {
+    padding: 0 10px;
+    /* 余白を適宜調整 */
+    display: inline-block;
+    /* li 要素とform要素をインラインブロックとして扱う */
+    /* 他のスタイル */
 }
 
-.btn:hover {
-    background-color: #ccc;
+.header__li form {
+    margin: 0;
+    /* フォームに余分なマージンが適用されないようにする */
+}
+
+.header__li:not(:last-child) {
+margin-right: 6px;
+}
+
+.header__li:first-child {
+    margin-right: 16px;
+}
+
+.header__li button {
+    background: none;
+    /* ボタンの背景をクリアに */
+    border: none;
+    /* ボタンのボーダーをクリアに */
+    color: #fff;
+    /* ボタンのテキスト色を白に */
+    cursor: pointer;
+    /* 他のスタイル */
+}
+/* 以下のスタイルはそのまま保持 */
+.button {
+    background-color: #000;
+    color:#fff;
 }

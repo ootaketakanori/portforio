@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Requests\AuthenticatedRequest;
 use App\Models\User;
@@ -24,26 +23,22 @@ class AuthController extends Controller
     }
     public function store(AuthenticatedRequest $request)
     {
-        //バリデーションを通過したデータを取得
+        // バリデーション済みのデータを取得
         $validatedData = $request->validated();
 
-        // エラーがある場合、ログに記録
-        if ($errors = $request->session()->get('errors')) {
-            Log::error('バリデーションエラー:', $errors->all());
+        $credentials = [
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+        ];
+
+        if (auth()->attempt($credentials)) {
+            // 認証成功した場合の処理
+            return redirect()->route('rest');
         }
 
-
-        //ユーザーをDBに保存
-        $user = User::create([
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-
+        // 認証失敗した場合の処理
+        return back()->withErrors([
+            'email' => 'メールアドレスかパスワードが間違っています。',
         ]);
-
-        //ログイン処理
-        //auth()->login($user);
-
-        //リダレイクト
-        return redirect()->route('rest');
     }
 }

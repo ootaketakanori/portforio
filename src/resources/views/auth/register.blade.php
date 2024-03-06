@@ -46,7 +46,10 @@
     </form>
     <p class="login-link">
         アカウントをお持ちの方はこちらから
-        <a class="register__button-submit" href="/authenticated">ログイン</a>
     </p>
+    <div class="a">
+        <a class="register__button-submit" href="{{ route('login') }}">ログイン</a>
+    </div>
+
 </div>
 @endsection
